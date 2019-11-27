@@ -1,0 +1,87 @@
+<?xml version="1.0"?>  
+<?xml-stylesheet type="text/xsl"   
+        href="configuration.xsl"?>  
+<configuration>  
+<property>  
+    <name>hadoop.tmp.dir</name>  
+    <value>/data/tmp/hadoop/tmp</value>  
+</property>  
+<property>  
+    <name>fs.defaultFS</name>  
+    <value>hdfs://master:9000/</value>  
+    <description>NameNode URI</description>  
+</property>  
+</configuration>  
+这里有两项配置：
+
+一项是hadoop.tmp.dir，配置hadoop处理过程中，临时文件的存储位置。这里的目录/data/需要提前创建。 另一项是fs.defaultFS，配置hadoop HDFS文件系统的地址。
+
+8、修改hadoop hdfs-site.xml文件配置
+编辑hdfs-site.xml文件：
+
+view plain "copy
+vim  /opt/hadoop/etc/hadoop/hdfs-site.xml  
+替换为下面的xml文本：
+
+view plain "copy
+<?xml version="1.0"?>  
+<?xml-stylesheet type="text/xsl"   
+        href="configuration.xsl"?>  
+<configuration>  
+<property>  
+    <name>dfs.namenode.name.dir</name>  
+    <value>/data/tmp/hadoop/hdfs/name</value>  
+</property>  
+<property>  
+    <name>dfs.datanode.data.dir</name>  
+    <value>/data/tmp/hadoop/hdfs/data</value>  
+</property>  
+<property>  
+     <name>dfs.replication</name>  
+     <value>1</value>  
+</property>  
+<property>  
+     <name>dfs.permissions</name>  
+     <value>false</value>  
+</property>  
+</configuration>  
+配置项说明：
+
+dfs.namenode.name.dir，配置元数据信息存储位置； dfs.datanode.data.dir，配置具体数据存储位置； dfs.replication，配置每个数据库备份数，由于目前我们使用1台节点，所以，设置为1，如果设置为2的话，运行会报错。
+
+9、修改hadoop yarn-site.xml文件配置
+编辑yarn-site.xml文件：
+
+view plain "copy
+vim  /opt/hadoop/etc/hadoop/yarn-site.xml  
+替换为下面的xml文本：
+
+view plain "copy
+<?xml version="1.0"?>  
+<?xml-stylesheet type="text/xsl"  
+        href="configuration.xsl"?>  
+<configuration>  
+<property>  
+    <name>yarn.nodemanager.aux-services</name>  
+    <value>mapreduce_shuffle</value>  
+</property>  
+</configuration>  
+这里的配置是指定所用服务。
+
+10、修改hadoop mapred-site.xml文件配置
+创建mapred-site.xml文件：
+
+view plain "copy
+vim  /opt/hadoop/etc/hadoop/mapred-site.xml  
+输入为下面的xml文本：
+
+view plain "copy
+<?xml version="1.0"?>  
+<?xml-stylesheet type="text/xsl"   
+        href="configuration.xsl"?>  
+<configuration>  
+<property>  
+    <name>mapreduce.framework.name</name>  
+    <value>yarn</value>  
+</property>  
+</configuration>  
